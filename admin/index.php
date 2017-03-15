@@ -40,7 +40,7 @@ $a = mysqli_query($conn,"select * from barang_laku");
 </div>
 <p><p>
 
-<img src="\kios\admin\foto\article.jpg" width="160"></img>
+<img src=".\admin\foto\article.jpg" width="160"></img>
 
 <!-- kalender -->
 <div class="pull-right">

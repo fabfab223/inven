@@ -29,9 +29,29 @@ while($r=mysqli_fetch_array($periksa_tgl)){
 	}
 }
 ?>
+<script language="JavaScript" type="text/javascript">
+    function checkform ( form )
+    {
+      if (form.tgl.value == "") {
+        alert( "Maaf, Tanggal 1 tidak boleh dikosongkan !" );
+        form.tgl.focus();
+        return false ;
+      }   
+		else if (form.tgl2.value == "") {
+        alert( "Maaf, Tanggal 2 tidak boleh dikosongkan !" );
+        form.tgl2.focus();
+        return false ;
+      }
+      return true ;
+    }
+	
+	
+	
+</script>
+
 <h3><span class="glyphicon glyphicon-briefcase"></span> Laporan Per Periode</h3>
 <hr>
-                <form action="cetak_periode.php" method="post">
+                <form action="cetak_periode.php" method="post" onsubmit = "return checkform(this);">
 				<div class="row">
 					<div class="col-md-6">
 						<div class="form-group">

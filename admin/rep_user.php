@@ -29,9 +29,32 @@ while($r=mysqli_fetch_array($periksa_tgl)){
 	}
 }
 ?>
+<!– Validasi Form –>
+
+<script language="JavaScript" type="text/javascript">
+    function checkform ( form )
+    {
+      if (form.tanggal1.value == "") {
+        alert( "Maaf, Tanggal 1 tidak boleh dikosongkan !" );
+        form.tanggal1.focus();
+        return false ;
+      }   
+		else if (form.tanggal2.value == "") {
+        alert( "Maaf, Tanggal 2 tidak boleh dikosongkan !" );
+        form.tanggal2.focus();
+        return false ;
+      }
+      return true ;
+    }
+	
+	
+	
+</script>
+
+<!–End Of Validasi Form –>
 <h3><span class="glyphicon glyphicon-briefcase"></span> Laporan Per User</h3>
 <hr>
-                <form action="cetak_user.php" method="post">
+                <form action="cetak_user.php" method="post" onsubmit = "return checkform(this);">
 				<div class="row">
 					<div class="col-md-6">
 						<div class="form-group">
@@ -75,7 +98,7 @@ while($r=mysqli_fetch_array($periksa_tgl)){
 			
             <div class="container">
                 <input type="reset" class="btn btn-danger" value="Reset">												
-                <input type="submit" class="btn btn-primary" value="Cetak" name="cetak">
+                <input type="submit" class="btn btn-primary" value="Cetak" name="cetak" >
             </div>
             </form>
         </div>

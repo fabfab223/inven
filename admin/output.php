@@ -1,5 +1,39 @@
 <?php include 'header.php';	?>
 
+
+<!– Validasi Form –>
+<script language="JavaScript" type="text/javascript">
+    function checkform ( form )
+    {
+      if (form.tgl2.value == "") {
+        alert( "Maaf, Tanggal tidak boleh dikosongkan !" );
+        form.tgl2.focus();
+        return false ;
+      }   
+		else if (form.nama_p.value == "") {
+        alert( "Maaf, Nama Peminta tidak boleh dikosongkan !" );
+        form.nama_p.focus();
+        return false ;
+      }
+	  else if (form.jumlah.value == "") {
+        alert( "Maaf, Jumlah Barang tidak boleh dikosongkan !" );
+        form.jumlah.focus();
+        return false ;
+      }
+	  else if (form.jumlah.value <=0 ) {
+        alert( "Maaf, Harap Masukkan Jumlah Barang Dengan Tepat !" );
+        form.jumlah.focus();
+        return false ;
+      }
+      return true ;
+    }
+	
+	
+	
+</script>
+<!–End Of Validasi Form –>
+
+
 <h3><span class="glyphicon glyphicon-briefcase"></span>  Transaksi Permintaan Barang</h3>
 <hr>
 <button style="margin-bottom:20px" data-toggle="modal" data-target="#myModal" class="btn btn-info col-md-2"><span class="glyphicon glyphicon-pencil"></span>  Entry</button>
@@ -105,7 +139,7 @@ if(isset($_GET['tanggal'])){
 				<h4 class="modal-title">Tambah Barang Keluar
 				</div>
 				<div class="modal-body">				
-					<form action="barang_keluar_act.php" method="POST">
+					<form action="barang_keluar_act.php" method="POST" onsubmit="return checkform(this);">
 						<div class="form-group">
 							<label>Tanggal</label>
 							<input name="tgl2" type="text" class="form-control" id="tgl2" autocomplete="off">
