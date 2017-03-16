@@ -5,14 +5,6 @@
 <button style="margin-bottom:20px" data-toggle="modal" data-target="#myModal" class="btn btn-info col-md-2"><span class="glyphicon glyphicon-pencil"></span>  Entry</button>
 
 
-<form action="" method="get">
-	<div class="input-group col-md-5 col-md-offset-7">
-		<span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-calendar"></span></span>
-		<input placeholder="Cetak Peminjaman Berdasarkan Tanggal" name="tanggal" class="form-control" id="tgl" onchange="this.form.submit()">
-		</input>
-	</div>
-
-</form>
 <br/>
 <?php 
 $periksa=mysqli_query($conn,"select * from barang where jumlah <=5");
@@ -47,7 +39,7 @@ if(isset($_GET['tanggal'])){
 	$tg="lap_barang_pinjam.php?tanggal='$tanggal'";
 	?><a style="margin-bottom:10px" href="<?php echo $tg ?>" target="_blank" class="btn btn-default pull-right"><span class='glyphicon glyphicon-print'></span>  Cetak</a><?php
 }else{
-	$tg="lap_barang_pinjam.php";
+	$tg="	";
 }
 ?>
 
