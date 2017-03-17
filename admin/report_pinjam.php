@@ -49,9 +49,9 @@ while($r=mysqli_fetch_array($periksa_tgl)){
 	
 </script>
 
-<h3><span class="glyphicon glyphicon-briefcase"></span> Laporan Per Periode</h3>
+<h3><span class="glyphicon glyphicon-briefcase"></span> Laporan Peminjaman Per Periode</h3>
 <hr>
-                <form action="cetak_periode.php" method="post" onsubmit = "return checkform(this);">
+                <form action="cetak_periode_pinjam.php" method="post" onsubmit = "return checkform(this);">
 				<div class="row">
 					<div class="col-md-6">
 						<div class="form-group">

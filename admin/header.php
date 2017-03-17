@@ -123,13 +123,21 @@
 			</ul></li>
 			<li><a href="input.php"><span class="glyphicon glyphicon-briefcase"></span>  Transaksi Input</a>
 			</li>
-			<li><a href="#"><span class="glyphicon glyphicon-briefcase"></span>  Laporan </a>
+			<li><a href="#"><span class="glyphicon glyphicon-briefcase"></span>  Laporan Permintaan Barang</a>
 			<ul class="">
 			<li><a href="report.php">Per Periode</a></li>
 			<li><a href="rep_user.php">Per User </a></li>
 			<li><a href="rep_barang.php">Per Barang</a> </li>
 			</ul>
 			</li>
+			<li><a href="#"><span class="glyphicon glyphicon-briefcase"></span>  Laporan Peminjaman Barang</a>
+			<ul class="">
+			<li><a href="report_pinjam.php">Per Periode</a></li>
+			<li><a href="rep_user_pinjam.php">Per User </a></li>
+			<li><a href="rep_barang_pinjam.php">Per Barang</a> </li>
+			</ul>
+			</li>
+			
 			<li><a href="ganti_pass.php"><span class="glyphicon glyphicon-lock"></span> Ganti Password</a></li>
 			<li><a href="logout.php"><span class="glyphicon glyphicon-log-out"></span>  Logout</a></li>			
 		</ul>
