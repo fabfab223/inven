@@ -5,6 +5,29 @@
 <button style="margin-bottom:20px" data-toggle="modal" data-target="#myModal" class="btn btn-info col-md-2"><span class="glyphicon glyphicon-plus"></span>Tambah Barang</button>
 <br/>
 <br/>
+
+<!-Validasi Form->
+<script language="JavaScript" type="text/javascript">
+    function checkform ( form )
+    {
+      if (form.nama.value == "") {
+        alert( "Maaf, Nama Barang tidak boleh dikosongkan !" );
+        form.nama.focus();
+        return false ;
+      }   
+		else if (form.jumlah.value == "") {
+        alert( "Maaf, Jumlah Barang tidak boleh dikosongkan !" );
+        form.jumlah.focus();
+        return false ;
+      }
+      return true ;
+    }
+	
+	
+	
+</script>
+<!-Validasi Form->
+
 <?php 
 $periksa=mysqli_query($conn,"select * from barang where jumlah <=5");
 while($q=mysqli_fetch_array($periksa)){	
@@ -97,7 +120,7 @@ $start = ($page - 1) * $per_hal;
 			<div class="modal-body">
 			
 			
-				<form action="tmb_brg_act.php" method="post" name="tamb_barang">
+				<form action="tmb_brg_act.php" method="post" name="tamb_barang" onsubmit="return checkform(this);">
 					<div class="form-group">
 						<label>Nama Barang</label>
 						<input name="nama" type="text" class="form-control" placeholder="Nama Barang" id="barang">

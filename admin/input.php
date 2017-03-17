@@ -14,6 +14,28 @@
 
 </form>
 <br/>
+<!– Validasi Form –>
+<script language="JavaScript" type="text/javascript">
+    function checkform ( form )
+    {
+      if (form.tgl2.value == "") {
+        alert( "Maaf, Tanggal tidak boleh dikosongkan !" );
+        form.tgl2.focus();
+        return false ;
+      }   
+	  else if (form.jumlah.value == "") {
+        alert( "Maaf, Jumlah Barang tidak boleh dikosongkan !" );
+        form.jumlah.focus();
+        return false ;
+      }
+      return true ;
+    }
+	
+	
+	
+</script>
+<!–End Of Validasi Form –>
+
 <?php 
 $periksa=mysqli_query($conn,"select * from barang where jumlah <=5");
 while($q=mysqli_fetch_array($periksa)){	
@@ -103,7 +125,7 @@ if(isset($_GET['tanggal'])){
 				<h4 class="modal-title">Tambah Barang Masuk
 				</div>
 				<div class="modal-body">				
-					<form action="tmb_brg_input.php" method="post">
+					<form action="tmb_brg_input.php" method="post" onsubmit="return checkform(this);">
 						<div class="form-group">
 							<label>Tanggal</label>
 							<input name="tgl2" type="text" class="form-control" id="tgl2" autocomplete="off">
@@ -124,7 +146,7 @@ if(isset($_GET['tanggal'])){
 						</div>									
 						<div class="form-group">
 							<label>Jumlah</label>
-							<input name="jumlah" type="text" class="form-control" placeholder="Jumlah" autocomplete="off">
+							<input name="jumlah" type="number" class="form-control" placeholder="Jumlah" autocomplete="off">
 						</div>																	
 
 					</div>

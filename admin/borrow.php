@@ -6,6 +6,42 @@
 
 
 <br/>
+
+
+<!– Validasi Form –>
+<script language="JavaScript" type="text/javascript">
+    function checkform ( form )
+    {
+      if (form.nama_p.value == "") {
+        alert( "Maaf, Nama Peminta tidak boleh dikosongkan !" );
+        form.nama_p.focus();
+        return false ;
+      }   
+		else if (form.jumlah.value == "") {
+        alert( "Maaf, Jumlah Barang tidak boleh dikosongkan !" );
+        form.jumlah.focus();
+        return false ;
+      }
+	  else if (form.tgl2.value == "") {
+        alert( "Maaf, Tanggal Pinjam Barang tidak boleh dikosongkan !" );
+        form.tgl2.focus();
+        return false ;
+      }
+	  else if (form.tgl3.value <=0 ) {
+        alert( "Maaf, Tanggal Kembali Barang Dengan Tepat !" );
+        form.tgl3.focus();
+        return false ;
+      }
+      return true ;
+    }
+	
+	
+	
+</script>
+<!–End Of Validasi Form –>
+
+
+
 <?php 
 $periksa=mysqli_query($conn,"select * from barang where jumlah <=5");
 while($q=mysqli_fetch_array($periksa)){	
@@ -113,7 +149,7 @@ if(isset($_GET['tanggal'])){
 				<h4 class="modal-title">Tambah Barang Pinjam
 				</div>
 				<div class="modal-body">				
-					<form action="barang_pinjam_act.php" method="POST">
+					<form action="barang_pinjam_act.php" method="POST" onsubmit="return checkform(this);">
 						
 						<div class="form-group">
 							<label>Nama Barang</label>								
@@ -135,7 +171,7 @@ if(isset($_GET['tanggal'])){
 						</div>						
 						<div class="form-group">
 							<label>Jumlah</label>
-							<input name="jumlah" type="text" class="form-control" placeholder="Jumlah" autocomplete="off">
+							<input name="jumlah" type="number" class="form-control" placeholder="Jumlah" autocomplete="off">
 						</div>	
 						<label>Tanggal Pinjam</label>
 						<div class="form-group">
