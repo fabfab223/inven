@@ -52,33 +52,32 @@ while($r=mysqli_fetch_array($periksa_tgl)){
 </script>
 
 <!–End Of Validasi Form –>
-<h3><span class="glyphicon glyphicon-briefcase"></span> Laporan Peminjaman Per User</h3>
+<h3><span class="glyphicon glyphicon-briefcase"></span> Laporan Peminjaman Per Barang</h3>
 <hr>
-                <form action="cetak_user_pinjam.php" method="post" onsubmit = "return checkform(this);">
+                <form action="cetak_barang_pinjam.php" method="post" onsubmit = "return checkform(this);">
 				<div class="row">
 					<div class="col-md-6">
 						<div class="form-group">
-							<label class="col-md-4">Nama User</label>
+							<label class="col-md-4">Nama Barang</label>
 							<div class="col-md-8">
-							<select class="form-control" name="nama">
+							<select class="form-control" name="nama_barang">
 								<?php 
-								$brg=mysqli_query($conn,"select distinct nama_peminta from barang_pinjam");
+								$brg=mysqli_query($conn,"select nama from barang");
 								while($b=mysqli_fetch_array($brg)){
 									?>	
-									<option value="<?php echo $b['nama_peminta']; ?>"><?php echo $b['nama_peminta'] ?></option>
+									<option value="<?php echo $b['nama']; ?>"><?php echo $b['nama'] ?></option>
 									<?php 
 								}
 								?>
-							</select>
+							</select><br>
 								
-							</div><br><br>
-						</div>
+							</div>
 							<div class="form-group">
 							<label class="col-md-4">Tanggal 1</label>
 							<div class="col-md-8">
 							<input name="tanggal1" type="text" class="form-control" id="tanggal1" autocomplete="off">
 								
-							</select>
+							</select><p>
 								
 							</div>
 							</div><br><br>	
@@ -91,14 +90,14 @@ while($r=mysqli_fetch_array($periksa_tgl)){
 								
 							</div>
 						</div>
-						
+						</div>	
 					</div>	
 					</div>	
             <br><br><br>
 			
             <div class="container">
                 <input type="reset" class="btn btn-danger" value="Reset">												
-                <input type="submit" class="btn btn-primary" value="Cetak" name="cetak" >
+                <input type="submit" class="btn btn-primary" value="Cetak" name="cetak">
             </div>
             </form>
         </div>
@@ -108,7 +107,6 @@ while($r=mysqli_fetch_array($periksa_tgl)){
 
 <br/>
 </table>
-
 <script type="text/javascript">
 		$(document).ready(function(){
 			$("#tanggal1").datepicker({dateFormat : 'yy-mm-dd'});							
@@ -118,5 +116,4 @@ while($r=mysqli_fetch_array($periksa_tgl)){
 		$(document).ready(function(){
 			$("#tanggal2").datepicker({dateFormat : 'yy-mm-dd'});							
 		});
-</script>	
-	
+</script>
