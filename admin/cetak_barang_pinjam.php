@@ -64,7 +64,7 @@ while($lihat=mysqli_fetch_array($query))
 	$no++;
 }
 
-$pdf->Output("laporan_keluar.pdf","I");
+$pdf->Output("laporan_pinjam_barang.pdf","I");
 
 ?>
 
