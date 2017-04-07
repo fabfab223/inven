@@ -29,9 +29,6 @@ while($r=mysqli_fetch_array($periksa_tgl)){
 }
 ?>
 
-<?php
-$a = mysqli_query($conn,"select * from barang_laku");
-?>
 <br><br>
 <div class="col-md-10">
 	<h3>Selamat Datang</h3>	

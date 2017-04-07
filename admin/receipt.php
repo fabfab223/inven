@@ -41,7 +41,8 @@ $pdf->Cell(3, 0.8, 'Jumlah', 1, 1, 'C');
 $pdf->SetFont('Arial','',10);
 $no=1;
 $nama=$_GET['nama_peminta'];
-$query=mysqli_query($conn,"select * from barang_keluar where nama_peminta ='$nama'");
+$id=$_GET['id'];
+$query=mysqli_query($conn,"select * from barang_keluar where nama_peminta ='$nama' and id='$id'");
 while($lihat=mysqli_fetch_array($query))
 
 {

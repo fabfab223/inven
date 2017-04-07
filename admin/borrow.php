@@ -2,9 +2,16 @@
 
 <h3><span class="glyphicon glyphicon-briefcase"></span>  Transaksi Peminjaman Barang</h3>
 <hr>
-<button style="margin-bottom:20px" data-toggle="modal" data-target="#myModal" class="btn btn-info col-md-2"><span class="glyphicon glyphicon-pencil"></span>  Entry</button>
+<button style="margin-bottom:20px" data-toggle="modal" data-target="#myModal" class="btn btn-info col-md-2"><span class="glyphicon glyphicon-pencil"></span>  Tambah</button>
 
+<form action="" method="get">
+	<div class="input-group col-md-5 col-md-offset-7">
+		<span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-calendar"></span></span>
+		<input placeholder="Cetak Output Berdasarkan Tanggal" name="tanggal" class="form-control" id="datetimepicker_search" onchange="">
+		</input>
+	</div>
 
+</form>
 <br/>
 
 
@@ -69,7 +76,18 @@ while($r=mysqli_fetch_array($periksa_tgl)){
 	}
 }
 ?>	
-<?php 
+<?php
+//Pagination
+	$batas = 10;
+	$pg = isset( $_GET['pg'] ) ? $_GET['pg'] : "";
+	
+	if ( empty( $pg ) ) {
+		$posisi = 0;
+		$pg = 1;
+	} else {
+		$posisi = ( $pg - 1 ) * $batas;
+	}
+//Pencarian Peminjaman PerTanggal
 if(isset($_GET['tanggal'])){
 	$tanggal=mysqli_real_escape_string($conn,$_GET['tanggal']);
 	$tg="lap_barang_pinjam.php?tanggal='$tanggal'";
@@ -85,6 +103,7 @@ if(isset($_GET['tanggal'])){
 	echo "<h4> Data Pinjam Tanggal  <a style='color:blue'> ". $_GET['tanggal']."</a></h4>";
 }
 ?>
+
 <table class="table">
 	<tr>
 		<th>No</th>
@@ -99,13 +118,14 @@ if(isset($_GET['tanggal'])){
 	<?php 
 	if(isset($_GET['tanggal'])){
 		$tanggal=mysqli_real_escape_string($conn,$_GET['tanggal']);
-		$brg=mysqli_query($conn,"select * from barang_pinjam where tanggal like '$tanggal' order by tanggal desc");
-	}else{
-		$brg=mysqli_query($conn,"select * from barang_pinjam order by tanggal desc");
-	}
-	$no=1;
-	while($b=mysqli_fetch_array($brg)){
+		$brg=mysqli_query($conn,"select * from barang_pinjam where tanggal like '$tanggal' order by tanggal desc");	
+		$brg=mysqli_query($conn,"select * from barang_pinjam where tanggal like '$tanggal' limit $batas");
 
+	}else{
+		$brg=mysqli_query($conn,"select * from barang_pinjam order by tanggal desc limit $posisi,$batas");
+	}
+	$no = 1+$posisi;
+	while($b=mysqli_fetch_array($brg)){
 		?>
 		<tr>
 			<td><?php echo $no++ ?></td>
@@ -125,7 +145,7 @@ if(isset($_GET['tanggal'])){
 			if($b['id_status'] == 1) { ?>
 				<a href="edit_pinjam.php?id=<?php echo $b['id']; ?>&&nama==<?php echo $b['nama_barang']; ?>" class="btn btn-warning">Edit</a>
 				<a href="kembali_pinjam.php?id=<?php echo $b['id']; ?>&&nama==<?php echo $b['nama_barang']; ?>" class="btn btn-success">Kembali</a>
-				<a href="pinjam-r.php?nama_peminta=<?php echo $b['nama_peminta']; ?>" class="btn btn-info">Print</a>
+				<a href="pinjam-r.php?nama_peminta=<?php echo $b['nama_peminta']; ?>&id=<?php echo $b['id']; ?>" class="btn btn-info" target="_BLANK">Print</a>
 			<?php } else { 
 				if($b['tgl_kembali'] == date('Y-m-d')) {?>
 				<a href="cancel_kembali.php?id=<?php echo $b['id']; ?>&&nama==<?php echo $b['nama_barang']; ?>" class="btn btn-danger">Cancel</a>
@@ -133,11 +153,62 @@ if(isset($_GET['tanggal'])){
 				<?php }}
 			?></td>
 		</tr>
-
+	
 		<?php 
+			
 	}
 	?>
-	
+			<!-- NAVIGASI PAGE-->
+
+<tr>
+			<td colspan="3">
+			<?php
+				if(isset($_GET['tanggal'])){
+				$tanggal=mysqli_real_escape_string($conn,$_GET['tanggal']);
+				$jml_data=mysqli_num_rows(mysqli_query($conn,"select * from barang_pinjam where tanggal like '$tanggal'"));
+
+				}else{
+				$jml_data=mysqli_num_rows(mysqli_query($conn,"select * from barang_pinjam order by tanggal desc"));
+				}
+
+				//hitung jumlah data
+				//Jumlah halaman
+				$JmlHalaman = ceil($jml_data/$batas); //ceil digunakan untuk pembulatan keatas
+			 
+				//Navigasi ke sebelumnya
+				if ( $pg > 1 ) {
+					$link = $pg-1;
+					$prev = "<a href='?pg=$link'><< </a>";
+				} else {
+					$prev = "<< ";
+				}
+				//Navigasi nomor
+				$nmr = '';
+				for ( $i = 1; $i<= $JmlHalaman; $i++ ){
+					if ( $i == $pg ) {
+						$nmr .= $i . " ";
+					} else {
+						$nmr .= "<a href='?pg=$i'>$i</a> ";
+					}
+				}
+				 
+				//Navigasi ke selanjutnya
+				if ( $pg < $JmlHalaman ) {
+					$link = $pg + 1;
+					$next = " <a href='?pg=$link'>>></a>";
+				} else {
+					$next = " >>";
+				}
+				//Tampilkan navigasi
+				echo $prev . $nmr . $next;
+				?>
+			</td>
+		</tr>
+	</table>
+	<br />
+	Total Data Anda adalah :<b> <?php echo $jml_data; ?> </b>
+	<!-- END NAVIGASI-->
+
 </table>
 
 <!-- modal input -->
@@ -208,7 +279,7 @@ if(isset($_GET['tanggal'])){
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.15.35/js/bootstrap-datetimepicker.min.js"></script>
 	
-	
+	<!-- DATETIME PICKER U/ Inputan-->
 	<script type="text/javascript">
 	$(function () {
 	$('#datetimepicker').datetimepicker({
@@ -240,6 +311,24 @@ if(isset($_GET['tanggal'])){
 	});
 	</script>
 
+	<!-- DATETIME PICKER U/ Pencarian-->
+	<script type="text/javascript">
+	$(function () {
+	$('#datetimepicker_search').datetimepicker({
+	format: 'YY-MM-DD HH:mm:00',
+	});
+  
+	$('#datepicker').datetimepicker({
+	format: 'DD MMMM YYYY',
+	});
+  
+	$('#timepicker').datetimepicker({
+	format: 'HH:mm'
+	});
+	});
+	</script>
+	
+	
 
 
 	<?php include 'footer.php'; ?>

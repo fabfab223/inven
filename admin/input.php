@@ -2,7 +2,7 @@
 
 <h3><span class="glyphicon glyphicon-briefcase"></span>  Transaksi Input Barang</h3>
 <hr>
-<button style="margin-bottom:20px" data-toggle="modal" data-target="#myModal" class="btn btn-info col-md-2"><span class="glyphicon glyphicon-pencil"></span>  Entry</button>
+<button style="margin-bottom:20px" data-toggle="modal" data-target="#myModal" class="btn btn-info col-md-2"><span class="glyphicon glyphicon-pencil"></span>  Tambah</button>
 
 
 <form action="" method="get">
@@ -64,6 +64,20 @@ while($r=mysqli_fetch_array($periksa_tgl)){
 }
 ?>
 
+<?php
+//Pagination
+	$batas = 10;
+	$pg = isset( $_GET['pg'] ) ? $_GET['pg'] : "";
+	
+	if ( empty( $pg ) ) {
+		$posisi = 0;
+		$pg = 1;
+	} else {
+		$posisi = ( $pg - 1 ) * $batas;
+	}
+?>
+
+
 <?php 
 if(isset($_GET['tanggal'])){
 	$tanggal=mysqli_real_escape_string($conn,$_GET['tanggal']);
@@ -92,12 +106,12 @@ if(isset($_GET['tanggal'])){
 	if(isset($_GET['tanggal'])){
 		$tanggal=mysqli_real_escape_string($conn,$_GET['tanggal']);
 		$brg=mysqli_query($conn,"select * from barang_masuk where tanggal like '$tanggal' order by tanggal desc");
+		$brg=mysqli_query($conn,"select * from barang_masuk where tanggal like '$tanggal' limit $batas");
 	}else{
-		$brg=mysqli_query($conn,"select * from barang_masuk order by tanggal desc");
+		$brg=mysqli_query($conn,"select * from barang_masuk order by tanggal desc limit $posisi,$batas");
 	}
-	$no=1;
+	$no=1+$posisi;
 	while($b=mysqli_fetch_array($brg)){
-
 		?>
 		<tr>
 			<td><?php echo $no++ ?></td>
@@ -113,7 +127,56 @@ if(isset($_GET['tanggal'])){
 		<?php 
 	}
 	?>
-	
+			<!-- NAVIGASI PAGE-->
+
+<tr>
+			<td colspan="3">
+			<?php
+				if(isset($_GET['tanggal'])){
+				$tanggal=mysqli_real_escape_string($conn,$_GET['tanggal']);
+				$jml_data=mysqli_num_rows(mysqli_query($conn,"select * from barang_masuk where tanggal like '$tanggal'"));
+
+				}else{
+				$jml_data=mysqli_num_rows(mysqli_query($conn,"select * from barang_masuk order by tanggal desc"));
+				}
+
+				//hitung jumlah data
+				//Jumlah halaman
+				$JmlHalaman = ceil($jml_data/$batas); //ceil digunakan untuk pembulatan keatas
+			 
+				//Navigasi ke sebelumnya
+				if ( $pg > 1 ) {
+					$link = $pg-1;
+					$prev = "<a href='?pg=$link'><< </a>";
+				} else {
+					$prev = "<< ";
+				}
+				//Navigasi nomor
+				$nmr = '';
+				for ( $i = 1; $i<= $JmlHalaman; $i++ ){
+					if ( $i == $pg ) {
+						$nmr .= $i . " ";
+					} else {
+						$nmr .= "<a href='?pg=$i'>$i</a> ";
+					}
+				}
+				 
+				//Navigasi ke selanjutnya
+				if ( $pg < $JmlHalaman ) {
+					$link = $pg + 1;
+					$next = " <a href='?pg=$link'>>></a>";
+				} else {
+					$next = " >>";
+				}
+				//Tampilkan navigasi
+				echo $prev . $nmr . $next;
+				?>
+			</td>
+		</tr>
+	</table>
+	<br />
+	Total Data Anda adalah :<b> <?php echo $jml_data; ?> </b>
+	<!-- END NAVIGASI-->
 </table>
 
 <!-- modal input -->

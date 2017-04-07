@@ -2,7 +2,7 @@
 
 <h3><span class="glyphicon glyphicon-briefcase"></span>  Data Barang</h3>
 <hr>
-<button style="margin-bottom:20px" data-toggle="modal" data-target="#myModal" class="btn btn-info col-md-2"><span class="glyphicon glyphicon-plus"></span>Tambah Barang</button>
+<button style="margin-bottom:20px" data-toggle="modal" data-target="#myModal" class="btn btn-info col-md-2"><span class="glyphicon glyphicon-plus"></span>Tambah </button>
 <br/>
 <br/>
 
@@ -55,15 +55,12 @@ while($r=mysqli_fetch_array($periksa_tgl)){
 	}
 }
 ?>
-<?php 
-$per_hal=30;
-$jumlah_record=mysqli_query($conn,"SELECT COUNT(*) from barang");
-$jum=mysqli_num_rows($jumlah_record);
-$halaman=ceil($jum[0] / $per_hal);
-$page = (isset($_GET['page'])) ? (int)$_GET['page'] : 1;
-$start = ($page - 1) * $per_hal;
+<?php
+ 
+include 'config.php';
+ 
 ?>
-<div class="col-md-10">
+ <div class="col-md-10">
 	
 	<a style="margin-bottom:10px" href="lap_barang.php" target="_blank" class="btn btn-default pull-right"><span class='glyphicon glyphicon-print'></span>  Cetak</a>
 </div>
@@ -74,39 +71,102 @@ $start = ($page - 1) * $per_hal;
 	</div>
 </form>
 <br/>
-<table class="table table-hover">
-	<tr>
-		<th class="col-md-1">No</th>
-		<th class="col-md-4">Nama Barang</th>
-		<th class="col-md-1">Stok Sekarang</th>
-		<th class="col-md-3">Opsi</th>
-	</tr>
-	<?php 
-	if(isset($_GET['cari'])){
-		$cari=mysqli_real_escape_string($conn,$_GET['cari']);
-		$brg=mysqli_query($conn,"select * from barang where nama like '$cari'");
-	}else{
-		$brg=mysqli_query($conn,"select * from barang limit $start, $per_hal");
-	}
-	$no=1;
-	while($b=mysqli_fetch_array($brg)){
 
+
+<table class="table">
+
+<tr>
+<th class="col-md-1">No</th>
+<th class="col-md-3">Nama Barang</th>
+<th class="col-md-2">Stok Sekarang</th>
+<th class="col-md-3">Opsi</th>
+</tr>
+
+ 
+<?php
+	$batas = 10;
+	$pg = isset( $_GET['pg'] ) ? $_GET['pg'] : "";
+ 
+	if ( empty( $pg ) ) {
+		$posisi = 0;
+		$pg = 1;
+	} else {
+		$posisi = ( $pg - 1 ) * $batas;
+	}
+
+	if (isset($_GET['cari'])){
+		$cari=mysqli_real_escape_string($conn,$_GET['cari']);
+		//$brg=mysqli_query($conn,"select * from barang where nama='$cari'");
+		$sql = mysqli_query($conn,"SELECT * FROM barang where nama='$cari' limit $posisi, $batas");
+	}else{
+		//$brg=mysqli_query($conn,"select * from barang limit $batas");
+		$sql = mysqli_query($conn,"SELECT * FROM barang limit $posisi, $batas");
+	}
+ 
+	$no = 1+$posisi;
+	while ( $r = mysqli_fetch_array( $sql ) ) {		
 		?>
 		<tr>
-			<td><?php echo $no++ ?></td>
-			<td><?php echo $b['nama'] ?></td>
-			<td><?php echo $b['jumlah'] ?></td>
-			
-			<td>
-				<a href="det_barang.php?id=<?php echo $b['id']; ?>" class="btn btn-info">Detail</a>
-				<a href="edit.php?id=<?php echo $b['id']; ?>" class="btn btn-warning">Edit</a>
-				<a onclick="if(confirm('Apakah anda yakin ingin menghapus data ini ??')){ location.href='hapus.php?id=<?php echo $b['id']; ?>' }" class="btn btn-danger">Hapus</a>
+			<td><?= $no; ?></td>
+			<td><?= $r['nama']; ?></td>
+			<td><?= $r['jumlah']; ?></td>
+			<td width="">		
+				<a href="det_barang.php?id=<?php echo $r['id'];?>" class="btn btn-info">Detail</a>
+				<a href="edit.php?id=<?php echo $r['id'];?>" class="btn btn-warning">Edit</a>
+				<a onclick="if (confirm('Apakah anda yakin ingin menghapus data ini ??')){ location.href='hapus.php?id=<?php echo $r['id']; ?>' }" class="btn btn-danger">Hapus</a>
 			</td>
-		</tr>		
-		<?php 
-	}
-	?>
-	
+		</tr>
+		<?php
+			$no++;
+		}
+		?>
+		<tr>
+			<td colspan="3">
+			<?php
+				if (isset($_GET['cari'])){
+					$cari=mysqli_real_escape_string($conn,$_GET['cari']);
+					//$sql = mysqli_query($conn,"SELECT * FROM barang where nama='$cari' limit $posisi, $batas");
+					$jml_data = mysqli_num_rows(mysqli_query($conn,"SELECT * FROM barang where nama='$cari'"));
+				}else{
+					//$sql = mysqli_query($conn,"SELECT * FROM barang limit $posisi, $batas");
+					$jml_data = mysqli_num_rows(mysqli_query($conn,"SELECT * FROM barang"));
+				}
+				//hitung jumlah data
+				//Jumlah halaman
+				$JmlHalaman = ceil($jml_data/$batas); //ceil digunakan untuk pembulatan keatas
+			 
+				//Navigasi ke sebelumnya
+				if ( $pg > 1 ) {
+					$link = $pg-1;
+					$prev = "<a href='?pg=$link'><< </a>";
+				} else {
+					$prev = "<< ";
+				}
+				//Navigasi nomor
+				$nmr = '';
+				for ( $i = 1; $i<= $JmlHalaman; $i++ ){
+					if ( $i == $pg ) {
+						$nmr .= $i . " ";
+					} else {
+						$nmr .= "<a href='?pg=$i'>$i</a> ";
+					}
+				}
+				 
+				//Navigasi ke selanjutnya
+				if ( $pg < $JmlHalaman ) {
+					$link = $pg + 1;
+					$next = " <a href='?pg=$link'>>></a>";
+				} else {
+					$next = " >>";
+				}
+				//Tampilkan navigasi
+				echo $prev . $nmr . $next;
+				?>
+			</td>
+		</tr>
+	</table>
+	<br />
+	Total Data Anda adalah :<b> <?php echo $jml_data; ?> </b>
 </table>
 
 <!-- modal input -->

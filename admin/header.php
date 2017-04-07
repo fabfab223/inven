@@ -63,7 +63,7 @@
 						while($q=mysqli_fetch_array($periksa)){	
 						
 							if($q['jumlah']<=5) {			
-								echo "<div style='padding:5px' class='alert alert-warning'><span class='glyphicon glyphicon-info-sign'></span> Stok <a style='color:red'>". $q['nama']."</a> yang tersisa sudah kurang dari 5 . Silahkan pesan lagi !!</div>";	
+								echo "<div style='padding:5px' class='alert alert-warning'><span class='glyphicon glyphicon-info-sign'></span> Stok <a style='color:red' href='./barang.php?cari=".$q['nama']."'>". $q['nama']."</a> yang tersisa sudah kurang dari 5 . Silahkan pesan lagi !!</div>";	
 							}
 						
 						}
@@ -72,7 +72,7 @@
 						while($r=mysqli_fetch_array($periksa_tgl_kmbli)){	
 						
 							if($r['tanggal_kembali'] <= date('Y-m-d')+1) {			
-								echo "<div style='padding:5px' class='alert alert-warning'><span class='glyphicon glyphicon-info-sign'></span> Barang <a style='color:red'>". $r['nama_barang']."</a> di pinjam oleh <a style='color:red'>". $r['nama_peminta']."</a> tanggal <a style='color:red'>". date_format(date_create($r['tanggal_kembali']),'d-M-Y')."</a> belum dikembalikan</div>";	
+								echo "<div style='padding:5px' class='alert alert-warning'><span class='glyphicon glyphicon-info-sign'></span> Barang <a style='color:red' href='./borrow.php'>". $r['nama_barang']."</a> di pinjam oleh <a style='color:red'>". $r['nama_peminta']."</a> tanggal <a style='color:red'>". date_format(date_create($r['tanggal_kembali']),'d-M-Y')."</a> belum dikembalikan</div>";	
 							}
 						
 						}

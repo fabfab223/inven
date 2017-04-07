@@ -3,8 +3,8 @@ include"config.php";
 include"header.php";
 ?>
 <?php 
-$periksa=mysqli_query($conn,"select * from barang where jumlah <=5");
-while($q=mysqli_fetch_array($periksa)){	
+$periksa=mysqli_query($conn,"select * from barang where jumlah <=5"); //pg_query
+while($q=mysqli_fetch_array($periksa)){	//pg_fetch_array
 	if($q['jumlah']<=5){	
 		?>	
 		<script>
